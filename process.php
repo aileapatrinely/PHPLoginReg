@@ -1,6 +1,7 @@
 <?php
 session_start();
 //require new_connection.php 
+require_once('new_connection.php');
 //check for session registration errors
 //check for session login errors
 
