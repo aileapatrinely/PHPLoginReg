@@ -9,8 +9,7 @@
 </head>
 <body>
 <!-- probably php for showing login or reg form -->
-<?php if(!empty($_SESSION['errors'])){?>
-    
+<?php if(!empty($_SESSION['errors'])){}?>
     <form action="process.php" method="post">
         <label for="first_name">First Name</label>
         <input id="first_name" type="text" name="first_name">
