@@ -151,4 +151,10 @@ else if(isset($_POST['action']) && $_POST['action']=='logout'){
     header('location: index.php');
     die();
 }
+//no form
+else{
+    //someone on process.php w/o submitting a form
+    header('location: index.php');
+    die();
+}
 ?>
