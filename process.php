@@ -133,10 +133,16 @@ if(isset($_POST['action'])&& $_POST['action']=='register'){
         }
         //else password didn't match
         else{
-            $_SESSION['login_errors'][]='Email/Password Combination Failed';
+            $_SESSION['login_errors'][]="Email/Password Combination Failed";
             header('location: index.php');
             die();
         }
+    }
+    //email not found, but don't tell them that
+    else{
+        $_SESSION['login_errors'][]="Email/Password Combination Failed";
+        header('location: index.php');
+        die();
     }
 }
 ?>
