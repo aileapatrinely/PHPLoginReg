@@ -12,5 +12,9 @@
     <!-- gonna need email and user id displayed and a logout form -->
     <p>Your Email:<?= $_SESSION['email']?></p>
     <p>Your User id:<?=$_SESSION['user_id']?></p>
+    <form action="process.php" method="post">
+        <input type="hidden" name="action" value="logout">
+        <input type="submit" value="Logging out? Okay.... Cool, I guess.">
+</form>
 </body>
 </html>
