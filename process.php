@@ -115,6 +115,28 @@ if(isset($_POST['action'])&& $_POST['action']=='register'){
 
 //login form
 }else if(isset($_POST['action']) && $_POST['action'] == 'login'){
-    
+    //don't let 'em mess up your db!
+    $email=escape_this_string($_POST['email']);
+    $password=escape_this_string($_POST['password']);
+    //find user based on email
+    $query="SELECT * FROM users WHERE email = '{$email}'";
+    $user=fetch_record($query);
+    //if user is found then we compare passwords and do encryption comparison
+    if(!empty($user)){
+        $enc_password=md5($password .''. $user['salt']);
+        if($user['password']==$enc_password){
+            //save the email and user_id in sesson
+            $_SESSION['user_id']=$user['id'];
+            $_SESSION['email']=$user['email'];
+            header('location: success.php');
+            die();
+        }
+        //else password didn't match
+        else{
+            $_SESSION['login_errors'][]='Email/Password Combination Failed';
+            header('location: index.php');
+            die();
+        }
+    }
 }
 ?>
