@@ -8,7 +8,7 @@ $_SESSION['login_errors']=[];
 //ADD YOUR OUTER IF STATEMENT CHECKING FOR POST ACTION AND MAKING SURE IT  = REGISTER
 //registration form
 // if statement check isset and not empty
-if(isset($_POST['action'])&& $_POST['action']=='register')
+if(isset($_POST['action'])&& $_POST['action']=='register'){
     if(!empty($_POST['first_name'])){
         // set errors
         $_SESSION['reg_errors'][]="First Name is required.";
@@ -67,51 +67,54 @@ if(isset($_POST['action'])&& $_POST['action']=='register')
         $_SESSION['reg_errors'][]="Passwords must match.";
     }
 //this is where I'll check the session errors
-if(count($_SESSION['regerrors'])>0){
-    //got some errors send 'em back
-    header('location: index.php');
-    //kill it
-    die();
-}
-//else no errors check if email is taken
-else{
-    //checking if email is taken
-    $query="SELECT id FROM email = '{$_POST['email']}'";
-    $user=fetch_record($query);
-    if(!empty($user)){
-        //setting session error
-        $_SESSION['reg_errors'][]="Email is taken.";
+    if(count($_SESSION['regerrors'])>0){
+        //got some errors send 'em back
         header('location: index.php');
+        //kill it
         die();
-    } else{
-    //escape malicious strings
-    $first_name=escape_this_string($_POST['first_name']);
-    $last_name=escape_this_string($_POST['last_name']);
-    $email=escape_this_string($_POST['email']);
-    $password=escape_this_string($_POST['password']);
-    //create a salt
-    $salt=bin2hex(openss1_random_psuedo_bytes(22));
-    //encrypt password with md5 & the salt
-    $enc_password=md5($password .''. $salt);
-
-    //finally query time!
-    $query = "INSERT INTO users (first_name, last_name, email, password, salt) VALUES ('{$first_name}', '{$last_name}', '{$email}', '{$enc_password}', '{$salt}')";
-    //set last_row_id, so query can run
-    $last_row_id=run_mysql_query($query);
-
-        if($last_row_id>0){
-            //saved successfully
-            $_SESSION['user_id']=$last_row_id;
-            $_SESSION['email']=$email;
-            header('location: success.php');
+    }
+    //else no errors check if email is taken
+    else{
+        //checking if email is taken
+        $query="SELECT id FROM email = '{$_POST['email']}'";
+        $user=fetch_record($query);
+        if(!empty($user)){
+            //setting session error
+            $_SESSION['reg_errors'][]="Email is taken.";
+            header('location: index.php');
             die();
-        }
-        //else kill it
-        else{
-         die('The INSERT failed. YOU failed!');
+        } else{
+        //escape malicious strings
+        $first_name=escape_this_string($_POST['first_name']);
+        $last_name=escape_this_string($_POST['last_name']);
+        $email=escape_this_string($_POST['email']);
+        $password=escape_this_string($_POST['password']);
+        //create a salt
+        $salt=bin2hex(openss1_random_psuedo_bytes(22));
+        //encrypt password with md5 & the salt
+        $enc_password=md5($password .''. $salt);
+
+        //finally query time!
+        $query = "INSERT INTO users (first_name, last_name, email, password, salt) VALUES ('{$first_name}', '{$last_name}', '{$email}', '{$enc_password}', '{$salt}')";
+        //set last_row_id, so query can run
+        $last_row_id=run_mysql_query($query);
+
+            if($last_row_id>0){
+                //saved successfully
+                $_SESSION['user_id']=$last_row_id;
+                $_SESSION['email']=$email;
+                header('location: success.php');
+                die();
+            }
+            //else kill it
+            else{
+            die('The INSERT failed. YOU failed!');
+            }
         }
     }
-}
 
 //login form
+}else if(isset($_POST['action']) && $_POST['action'] == 'login'){
+    
+}
 ?>
