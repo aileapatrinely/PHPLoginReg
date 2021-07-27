@@ -67,7 +67,26 @@ if(isset($_POST['action'])&& $_POST['action']=='register')
         $_SESSION['reg_errors'][]="Passwords must match.";
     }
 //this is where I'll check the session errors
-if(){}
+if(count($_SESSION['regerrors'])>0){
+    //got some errors send 'em back
+    header('location: index.php');
+    //kill it
+    die();
+}
+//else no errors check if email is taken
+else{
+    //escape malicious strings
+    $first_name=escape_this_string($_POST['first_name']);
+    $last_name=escape_this_string($_POST['last_name']);
+    $email=escape_this_string($_POST['email']);
+    $password=escape_this_string($_POST['password']);
+    //create a salt
+    $salt=bin2hex(openss1_random_psuedo_bytes(22));
+    //encrypt password with md5 & the salt
+    $enc_password=md5($password .''. $salt);
+
+    //finally query time!
+}
 
 //login form
 ?>
