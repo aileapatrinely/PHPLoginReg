@@ -145,4 +145,10 @@ if(isset($_POST['action'])&& $_POST['action']=='register'){
         die();
     }
 }
+//logout form
+else if(isset($_POST['action']) && $_POST['action']=='logout'){
+    session_destroy();
+    header('location: index.php');
+    die();
+}
 ?>
