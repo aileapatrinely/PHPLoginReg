@@ -75,6 +75,15 @@ if(count($_SESSION['regerrors'])>0){
 }
 //else no errors check if email is taken
 else{
+    //checking if email is taken
+    $query="SELECT id FROM email = '{$_POST['email']}'";
+    $user=fetch_record($query);
+    if(!empty($user)){
+        //setting session error
+        $_SESSION['reg_errors'][]="Email is taken.";
+        header('location: index.php');
+        die();
+    } else{
     //escape malicious strings
     $first_name=escape_this_string($_POST['first_name']);
     $last_name=escape_this_string($_POST['last_name']);
@@ -86,6 +95,22 @@ else{
     $enc_password=md5($password .''. $salt);
 
     //finally query time!
+    $query = "INSERT INTO users (first_name, last_name, email, password, salt) VALUES ('{$first_name}', '{$last_name}', '{$email}', '{$enc_password}', '{$salt}')";
+    //set last_row_id, so query can run
+    $last_row_id=run_mysql_query($query);
+
+        if($last_row_id>0){
+            //saved successfully
+            $_SESSION['user_id']=$last_row_id;
+            $_SESSION['email']=$email;
+            header('location: success.php');
+            die();
+        }
+        //else kill it
+        else{
+         die('The INSERT failed. YOU failed!');
+        }
+    }
 }
 
 //login form
